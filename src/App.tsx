@@ -1,9 +1,9 @@
-import React from 'react';
 import Layout from './components/Layout';
 import Hero from './components/Hero';
 import Gallery from './components/Gallery';
 import About from './components/About';
 import FAQ from './components/FAQ';
+import Contact from './components/Contact';
 
 function App() {
     return (
@@ -12,8 +12,10 @@ function App() {
             <Gallery />
             <About />
             <FAQ />
+            <Contact calendlyUrl="https://calendly.com/alpha-paramounttattoos/30min" />
         </Layout>
     );
 }
 
 export default App;
+
