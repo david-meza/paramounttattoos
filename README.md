@@ -117,4 +117,9 @@ src/
 
 ## License
 
-ISC
+Copyright (c) 2025 Paramount Tattoo. All rights reserved.
+
+This portfolio website and all its content are proprietary and protected by copyright laws.
+Unauthorized use, reproduction, or distribution is prohibited.
+
+For licensing inquiries, please contact: contact@paramounttattoos.com
