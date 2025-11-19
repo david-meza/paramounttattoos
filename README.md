@@ -32,7 +32,7 @@ A modern, mobile-responsive portfolio website for a fine line and tiny tattoo ar
 1. Clone the repository:
 ```bash
 git clone <your-repo-url>
-cd paramount-tattoo
+cd paramounttattoos
 ```
 
 2. Install dependencies:
@@ -40,17 +40,7 @@ cd paramount-tattoo
 npm install
 ```
 
-3. Set up environment variables:
-```bash
-cp .env.example .env
-```
-
-Edit `.env` and add your Calendly URL:
-```
-VITE_CALENDLY_URL=https://calendly.com/your-username
-```
-
-4. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```

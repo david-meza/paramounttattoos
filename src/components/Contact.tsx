@@ -9,8 +9,15 @@ interface ContactProps {
 const Contact: React.FC<ContactProps> = ({ 
     calendlyUrl
 }) => {
-    const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+    const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [showCalendly, setShowCalendly] = useState<boolean>(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        placement: '',
+        size: '',
+        description: ''
+    });
     const [calendlyUrlState] = useState<string>(
         calendlyUrl || import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com/alpha-paramounttattoos/30min'
     );
@@ -27,13 +34,44 @@ const Contact: React.FC<ContactProps> = ({
         }
     }, []);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setFormStatus('submitting');
-        // Simulate form submission - replace with actual API call
-        setTimeout(() => {
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send email');
+            }
+
             setFormStatus('success');
-        }, 1500);
+            // Reset form
+            setFormData({
+                name: '',
+                email: '',
+                placement: '',
+                size: '',
+                description: ''
+            });
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setFormStatus('error');
+        }
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     return (
@@ -122,6 +160,20 @@ const Contact: React.FC<ContactProps> = ({
                                         Or book directly with Calendly →
                                     </button>
                                 </div>
+                            ) : formStatus === 'error' ? (
+                                <div className="text-center py-12">
+                                    <div className="w-16 h-16 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <Mail size={32} />
+                                    </div>
+                                    <h3 className="text-2xl text-white font-bold mb-2">Error Sending Request</h3>
+                                    <p className="text-zinc-400 mb-4">Please try again or contact us directly.</p>
+                                    <button
+                                        onClick={() => setFormStatus('idle')}
+                                        className="mt-6 px-6 py-3 bg-amber-500 text-black font-bold hover:bg-amber-400 transition-colors"
+                                    >
+                                        Try Again
+                                    </button>
+                                </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -129,6 +181,9 @@ const Contact: React.FC<ContactProps> = ({
                                             <label className="block text-sm font-medium text-zinc-400 mb-2">Full Name</label>
                                             <input
                                                 type="text"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleInputChange}
                                                 required
                                                 className="w-full bg-zinc-900 border border-zinc-700 p-3 text-white focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors"
                                                 placeholder="John Doe"
@@ -138,6 +193,9 @@ const Contact: React.FC<ContactProps> = ({
                                             <label className="block text-sm font-medium text-zinc-400 mb-2">Email</label>
                                             <input
                                                 type="email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleInputChange}
                                                 required
                                                 className="w-full bg-zinc-900 border border-zinc-700 p-3 text-white focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors"
                                                 placeholder="john@example.com"
@@ -150,6 +208,9 @@ const Contact: React.FC<ContactProps> = ({
                                             <label className="block text-sm font-medium text-zinc-400 mb-2">Placement</label>
                                             <input
                                                 type="text"
+                                                name="placement"
+                                                value={formData.placement}
+                                                onChange={handleInputChange}
                                                 className="w-full bg-zinc-900 border border-zinc-700 p-3 text-white focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors"
                                                 placeholder="e.g. Left Forearm"
                                             />
@@ -158,6 +219,9 @@ const Contact: React.FC<ContactProps> = ({
                                             <label className="block text-sm font-medium text-zinc-400 mb-2">Approx. Size</label>
                                             <input
                                                 type="text"
+                                                name="size"
+                                                value={formData.size}
+                                                onChange={handleInputChange}
                                                 className="w-full bg-zinc-900 border border-zinc-700 p-3 text-white focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors"
                                                 placeholder="e.g. 2x3 inches"
                                             />
@@ -167,6 +231,9 @@ const Contact: React.FC<ContactProps> = ({
                                     <div>
                                         <label className="block text-sm font-medium text-zinc-400 mb-2">Description of Idea</label>
                                         <textarea
+                                            name="description"
+                                            value={formData.description}
+                                            onChange={handleInputChange}
                                             rows={4}
                                             required
                                             className="w-full bg-zinc-900 border border-zinc-700 p-3 text-white focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors"
