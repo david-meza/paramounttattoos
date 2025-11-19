@@ -54,12 +54,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-20">
                         <div 
-                            className="flex-shrink-0 cursor-pointer" 
+                            className="flex-shrink-0 cursor-pointer flex items-center" 
                             onClick={() => scrollToSection('hero')}
                         >
-                            <span className="text-2xl font-bold tracking-tighter text-white">
-                                PARAMOUNT TATTOO
-                            </span>
+                            <img 
+                                src="/images/paramount-logo-square.png" 
+                                alt="Paramount Tattoo" 
+                                className="h-12 w-12 object-contain"
+                                loading="eager"
+                            />
                         </div>
                         
                         {/* Desktop Nav */}
@@ -117,9 +120,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <footer className="bg-zinc-950 py-12 border-t border-zinc-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
                     <div className="mb-4 md:mb-0">
-                        <span className="text-xl font-bold tracking-tighter text-white cursor-pointer" onClick={() => scrollToSection('hero')}>
-                            PARAMOUNT TATTOO
-                        </span>
+                        <img 
+                            src="/images/paramount-logo-square.png" 
+                            alt="Paramount Tattoo" 
+                            className="h-16 w-16 object-contain cursor-pointer mx-auto md:mx-0" 
+                            onClick={() => scrollToSection('hero')}
+                            loading="lazy"
+                        />
                     </div>
                     
                     <div className="flex space-x-6 mb-4 md:mb-0">
